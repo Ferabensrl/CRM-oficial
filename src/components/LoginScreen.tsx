@@ -12,18 +12,32 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
     setLoading(true);
     setError(null);
 
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({ email, password });
 
-    if (error || !data.user) {
-      setError(error?.message || 'Credenciales inválidas');
+    if (authError || !authData.user) {
+      setLoading(false);
+      setError(authError?.message || 'Credenciales inválidas');
       return;
     }
 
-    let user: User = { id: 1, nombre: 'Fernando', rol: 'admin' };
-    if (data.user.email === 'mariela@example.com') {
-      user = { id: 2, nombre: 'Mariela', rol: 'vendedor' };
+    const { data: vendedor, error: vendedorError } = await supabase
+      .from('vendedores')
+      .select('id, nombre, rol')
+      .eq('email', authData.user.email)
+      .single();
+
+    setLoading(false);
+
+    if (vendedorError || !vendedor) {
+      setError(vendedorError?.message || 'No se encontró información de usuario');
+      return;
     }
+
+    const user: User = {
+      id: vendedor.id,
+      nombre: vendedor.nombre,
+      rol: vendedor.rol as 'admin' | 'vendedor',
+    };
 
     onLogin(user);
   };
