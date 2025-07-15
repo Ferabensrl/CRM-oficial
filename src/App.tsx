@@ -28,7 +28,7 @@ interface AppState {
 
 function App() {
   const [state, setState] = useState<AppState>({
-    currentUser: { id: 1, nombre: 'Fernando', rol: 'admin' }, // Por defecto Fernando
+    currentUser: null,
     activeView: 'dashboard',
     clientes: [],
     movimientos: [],
