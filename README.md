@@ -43,6 +43,18 @@ SUPABASE_ANON_KEY=your-supabase-anon-key
 
 You can copy `.env.example` as a starting point.
 
+## Excel data files
+
+Default spreadsheets for imports are kept in the `excel-data/` directory:
+
+```
+excel-data/HOJA MOVIMIENTOS.xlsx
+excel-data/HOJA Base de Datos Clientes.xlsx
+excel-data/Hoja Vendedores.xlsx
+```
+
+Place the real files with those names in the folder before running any import commands.
+
 ## Importing Excel data
 
 1. Install the conversion dependency:
@@ -73,6 +85,16 @@ Each record in `movimientos.json` follows the order:
 `Fecha, Cliente, Vendedor, Tipo de Movimiento, Documento, Importe, Comentario`.
 
 The converter also turns positive `Importe` values into negatives when the `Tipo de Movimiento` is `Pago` or `Devolución`, mirroring the Excel sheet's logic.
+
+## Import into Supabase
+
+Once your `.env` and Excel files are in place, you can load the data directly into your Supabase tables with:
+
+```bash
+npx ts-node importarSupabase.ts
+```
+
+The script imports vendors, clients and movements from the spreadsheets and applies the same negative `Importe` rule for payments and refunds.
 
 Additional project documentation can be found in `README_CRM_Feraben_v2.md`.
 
