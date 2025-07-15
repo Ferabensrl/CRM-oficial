@@ -32,6 +32,17 @@ Preview the production build:
 npm run preview
 ```
 
+## Environment variables
+
+Create a `.env` file in the project root with your Supabase credentials:
+
+```bash
+SUPABASE_URL=your-supabase-url
+SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+You can copy `.env.example` as a starting point.
+
 ## Importing Excel data
 
 1. Install the conversion dependency:
