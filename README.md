@@ -61,6 +61,8 @@ import/
 Each record in `movimientos.json` follows the order:
 `Fecha, Cliente, Vendedor, Tipo de Movimiento, Documento, Importe, Comentario`.
 
+The converter also turns positive `Importe` values into negatives when the `Tipo de Movimiento` is `Pago` or `Devolución`, mirroring the Excel sheet's logic.
+
 Additional project documentation can be found in `README_CRM_Feraben_v2.md`.
 
 ## Contributing
