@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import xlsx from 'xlsx';
 
 async function main() {
-  const input = process.argv[2] || '../PLANILLA MOVIMIENTOS OK.xlsm';
+  const input = process.argv[2] || 'PLANILLA MOVIMIENTOS OK.xlsm';
   const output = process.argv[3] || './movimientos.json';
   const workbook = xlsx.readFile(input);
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
