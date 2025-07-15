@@ -86,15 +86,49 @@ Each record in `movimientos.json` follows the order:
 
 The converter also turns positive `Importe` values into negatives when the `Tipo de Movimiento` is `Pago` or `Devolución`, mirroring the Excel sheet's logic.
 
-## Import into Supabase
+## Importing data to Supabase
 
-Once your `.env` and Excel files are in place, you can load the data directly into your Supabase tables with:
+The repository includes a helper script `importarSupabase.ts` that reads the Excel
+spreadsheets and inserts their contents into your Supabase project.
+
+### Environment variables
+
+Create a `.env` file with your credentials before running the script:
+
+```bash
+SUPABASE_URL=your-supabase-url
+SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+### Dependencies
+
+Install the project dependencies (including `@supabase/supabase-js`, `xlsx` and
+`ts-node`) with:
+
+```bash
+npm install
+```
+
+### Expected folder structure
+
+The script expects the following files inside `excel-data/`:
+
+```text
+excel-data/HOJA MOVIMIENTOS.xlsx
+excel-data/HOJA Base de Datos Clientes.xlsx
+excel-data/Hoja Vendedores.xlsx
+```
+
+### Running the import
+
+Execute the script with:
 
 ```bash
 npx ts-node importarSupabase.ts
 ```
 
-The script imports vendors, clients and movements from the spreadsheets and applies the same negative `Importe` rule for payments and refunds.
+It will import vendors, clients and movements, applying the same negative
+`Importe` rule used in the Excel sheet for payments and refunds.
 
 Additional project documentation can be found in `README_CRM_Feraben_v2.md`.
 
