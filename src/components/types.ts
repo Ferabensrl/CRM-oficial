@@ -17,7 +17,7 @@ export interface DashboardViewProps {
   currentUser: User;
 }
 
-import { Cliente, Movimiento } from '../services/api';
+import { Cliente, Movimiento, Comision } from '../services/api';
 
 export interface ClientesViewProps {
   clientes: Cliente[];
@@ -42,4 +42,7 @@ export interface LoginScreenProps {
   onLogin: (user: User) => void;
 }
 
-export interface ComisionesViewProps {}
+export interface ComisionesViewProps {
+  comisiones: Comision[];
+  onRefresh: () => void;
+}

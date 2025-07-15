@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Users, FileText, DollarSign, BarChart3, LogOut, Menu, X } from 'lucide-react';
-import apiService, { Cliente, Movimiento } from './services/api';
+import apiService, { Cliente, Movimiento, Comision } from './services/api';
 import supabase from './lib/supabase';
 import { User } from './components/types';
 import './App.css';
@@ -22,6 +22,7 @@ interface AppState {
   activeView: 'dashboard' | 'clientes' | 'movimientos' | 'comisiones' | 'estado-cuenta';
   clientes: Cliente[];
   movimientos: Movimiento[];
+  comisiones: Comision[];
   selectedClienteId: number | null;
   estadoCuentaMovimientos: Movimiento[];
   isLoading: boolean;
@@ -34,6 +35,7 @@ function App() {
     activeView: 'dashboard',
     clientes: [],
     movimientos: [],
+    comisiones: [],
     selectedClienteId: null,
     estadoCuentaMovimientos: [],
     isLoading: true,
@@ -74,15 +76,17 @@ function App() {
     try {
       setState(prev => ({ ...prev, isLoading: true }));
       
-      const [clientesData, movimientosData] = await Promise.all([
+      const [clientesData, movimientosData, comisionesData] = await Promise.all([
         apiService.getClientes(),
-        apiService.getMovimientos()
+        apiService.getMovimientos(),
+        apiService.getComisiones()
       ]);
 
       setState(prev => ({
         ...prev,
         clientes: clientesData,
         movimientos: movimientosData,
+        comisiones: comisionesData,
         isLoading: false,
       }));
     } catch (error) {
@@ -317,7 +321,7 @@ function App() {
                 <MovimientosView movimientos={state.movimientos} onRefresh={loadData} />
               )}
               {state.activeView === 'comisiones' && state.currentUser.rol === 'admin' && (
-                <ComisionesView />
+                <ComisionesView comisiones={state.comisiones} onRefresh={loadData} />
               )}
             </>
           )}
