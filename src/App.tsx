@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Users, FileText, DollarSign, BarChart3, LogOut, Menu, X } from 'lucide-react';
 import apiService, { Cliente, Movimiento } from './services/api';
+import supabase from './lib/supabase';
+import { User } from './components/types';
 import './App.css';
 
 import DashboardView from "./components/DashboardView";
@@ -43,6 +45,31 @@ function App() {
     loadData();
   }, []);
 
+  // Revisar sesión activa de Supabase al iniciar la app
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        await fetchCurrentUser(session.user.email);
+      }
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user && event === 'SIGNED_IN') {
+        fetchCurrentUser(session.user.email);
+      }
+      if (event === 'SIGNED_OUT') {
+        setState(prev => ({ ...prev, currentUser: null }));
+      }
+    });
+
+    checkSession();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   const loadData = async () => {
     try {
       setState(prev => ({ ...prev, isLoading: true }));
@@ -61,6 +88,24 @@ function App() {
     } catch (error) {
       console.error('Error cargando datos:', error);
       setState(prev => ({ ...prev, isLoading: false }));
+    }
+  };
+
+  const fetchCurrentUser = async (email: string) => {
+    const { data: vendedor, error } = await supabase
+      .from('vendedores')
+      .select('id, nombre, rol')
+      .eq('email', email)
+      .single();
+
+    if (!error && vendedor) {
+      const user: User = {
+        id: vendedor.id,
+        nombre: vendedor.nombre,
+        rol: vendedor.rol as 'admin' | 'vendedor',
+      };
+
+      setState(prev => ({ ...prev, currentUser: user }));
     }
   };
 
@@ -100,6 +145,7 @@ function App() {
   };
 
   const handleLogout = () => {
+    supabase.auth.signOut();
     setState(prev => ({
       ...prev,
       currentUser: null,
