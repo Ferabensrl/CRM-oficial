@@ -24,6 +24,14 @@ export interface Movimiento {
   comentario?: string;
 }
 
+export interface Comision {
+  id: number;
+  vendedor_id: number;
+  fecha: string;
+  monto: number;
+  comentario?: string;
+}
+
 const apiService = {
   async getClientes(): Promise<Cliente[]> {
     const { data, error } = await supabase
@@ -64,6 +72,45 @@ const apiService = {
   formatearFecha(fecha: string): string {
     const d = new Date(fecha);
     return d.toLocaleDateString('es-UY');
+  },
+
+  async createMovimiento(mov: Omit<Movimiento, 'id'>): Promise<void> {
+    const { error } = await supabase.from('movimientos').insert(mov);
+    if (error) throw error;
+  },
+
+  async updateMovimiento(id: number, mov: Partial<Movimiento>): Promise<void> {
+    const { error } = await supabase.from('movimientos').update(mov).eq('id', id);
+    if (error) throw error;
+  },
+
+  async deleteMovimiento(id: number): Promise<void> {
+    const { error } = await supabase.from('movimientos').delete().eq('id', id);
+    if (error) throw error;
+  },
+
+  async getComisiones(): Promise<Comision[]> {
+    const { data, error } = await supabase
+      .from('comisiones')
+      .select('*')
+      .order('fecha');
+    if (error) throw error;
+    return (data as Comision[]) || [];
+  },
+
+  async createComision(com: Omit<Comision, 'id'>): Promise<void> {
+    const { error } = await supabase.from('comisiones').insert(com);
+    if (error) throw error;
+  },
+
+  async updateComision(id: number, com: Partial<Comision>): Promise<void> {
+    const { error } = await supabase.from('comisiones').update(com).eq('id', id);
+    if (error) throw error;
+  },
+
+  async deleteComision(id: number): Promise<void> {
+    const { error } = await supabase.from('comisiones').delete().eq('id', id);
+    if (error) throw error;
   },
 };
 
