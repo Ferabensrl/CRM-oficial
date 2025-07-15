@@ -63,7 +63,7 @@ const DashboardView: React.FC<DashboardViewProps> = ({ stats, currentUser }) => 
         {stats.tipoUsuario === 'admin' ? (
           <>
             <p>✅ Sistema funcionando correctamente</p>
-            <p>📊 Base de datos SQLite local</p>
+            <p>🔗 Conectado a Supabase</p>
             <p>🔒 Datos seguros en tu PC</p>
             <p>📱 Interfaz responsive para móviles</p>
             <p>👥 Acceso completo a todos los módulos</p>
