@@ -1,3 +1,29 @@
-node_modules
-dist
+# Dependency directories
+node_modules/
+
+# Production builds
+build/
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment files
+.env
+.env.local
+.env.*.local
+
+# Test coverage
+coverage/
+
+# Next.js build output
+.next/
+
+# Mac system files
 .DS_Store
+
+# IDE settings
+.idea/
+.vscode/

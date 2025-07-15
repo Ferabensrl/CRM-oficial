@@ -33,3 +33,17 @@ npm run preview
 ```
 
 Additional project documentation can be found in `README_CRM_Feraben_v2.md`.
+
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on opening issues and
+submitting pull requests.
+
+## License
+
+This project is licensed under the terms of the [MIT license](LICENSE).
+
+## Git ignore
+
+The `.gitignore` file contains common patterns for Node.js and React build
+artifacts.
